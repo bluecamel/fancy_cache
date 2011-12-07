@@ -1,0 +1,35 @@
+{% extends "fancy_cache/base.html" %}
+{% load humanize %}
+
+{% block content %}
+    {% for server in servers %}
+    <table class="fc-manager-table">
+        <caption>Host: <strong>{{ server.host }}</strong> Port: <strong>{{ server.port }}</strong></caption>
+        <thead>
+            <tr>
+                <th>Key</th>
+                <th>Size (bytes)</th>
+                <th>Time Remaining</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for key in server.keys %}
+                <tr>
+                    <td class="fc-manager-table-td-key" data-sort="{{ key.key }}">{{ key.key }}</td>
+                    <td class="fc-manager-table-td-size" data-sort="{{ key.size|intcomma }}">{{ key.size|filesizeformat }}</td>
+                    <td class="fc-manager-table-td-seconds" data-sort="{{ key.seconds_remaining }}">{{ key.expire_time|timeuntil }}</td>
+                    <td class="fc-manager-table-td-delete" data-sort=""><a href="" class="fc-key-delete-button" data-key="{{ key.key|urlencode|iriencode }}">[ delete ]</a></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% endfor %}
+
+    <div id="fc-manager-key-list-actions">
+        <ul id="fc-manager-key-list-actions-list">
+            <li class="fc-manager-key-list-actions-item"><a href="" id="fc-manager-key-list-reset">[ reset key list ]</a></li>
+            <li class="fc-manager-key-list-actions-item"><a href="" id="fc-manager-key-list-delete-button">[ flush entire cache ]</a></li>
+        </ul>
+    </div>
+{% endblock %}

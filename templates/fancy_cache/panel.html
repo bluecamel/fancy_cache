@@ -1,0 +1,59 @@
+{% load dajaxice_templatetags %}
+<div id="fc-panel-open-button-ctr">
+    <a id="fc-panel-open-button" href="">f &#162;</a>
+</div>
+<div id="fc-panel" class="span-7 last{% if show_full_panel %} fc-panel-full{% endif %}" style="display: none;">
+    <div id="fc-panel-close-button-ctr">
+        <a id="fc-panel-close-button" href="">f &#162;</a>
+    </div>
+    <ul id="fc-panel-link-list">
+        <li class="fc-panel-link-list-item"><a href="{% url fancy_cache_key_list %}">Keys</a></li>
+        <li class="fc-panel-link-list-item"><a href="{% url fancy_cache_stats_list %}">Stats</a></li>
+    </ul>
+    {% if view_keys %}
+    <table class="fc-panel-table">
+        <caption>View Keys <a href="" class="fc-view-keys-delete-button">[ delete all ]</a></caption>
+        <thead>
+            <tr>
+                <th>Key</th>
+                <th>Fragment Name</th>
+                <th>Variance</th>
+                <th>Expire Time</th>
+                <th>&nbsp;</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for key, fragment_name, var_args, expire_time in view_keys %}
+            <tr>
+                <td class="fc-panel-table-td-key">{{ key|safe }}</td>
+                <td class="fc-panel-table-td-fragment-name">{{ fragment_name|safe }}</td>
+                <td class="fc-panel-table-td-name">{{ var_args|safe }}</td>
+                <td class="fc-panel-table-td-expire-time">{{ expire_time }}</td>
+                <td class="fc-panel-table-td-delete">{% if perm_key_delete %}<a href="" class="fc-key-delete-button" data-key="{{ key|urlencode|iriencode }}">[delete]</a>{% endif %}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
+    {% if template_keys %}
+    <table class="fc-panel-table">
+        <caption>Template Keys <a href="" class="fc-template-keys-delete-button" data-keys="{{ template_keys|urlencode|iriencode }}">[ delete all ]</a></caption>
+        <tbody>
+            {% for key, fragment_name, vary_on, expire_time in template_keys %}
+            <tr>
+                <td class="fc-panel-table-td-key">{{ key|safe }}</td>
+                <td class="fc-panel-table-td-fragment-name">{{ fragment_name|safe }}</td>
+                <td class="fc-panel-table-td-name">{{ vary_on|safe }}</td>
+                <td class="fc-panel-table-td-expire-time">{{ expire_time }}</td>
+                <td class="fc-panel-table-td-delete">{% if perm_key_delete %} <a href="" class="fc-key-delete-button" data-key="{{ key|urlencode|iriencode }}">[delete]</a>{% endif %}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% endif %}
+</div>
+<script>!window.jQuery && document.write('<script src="{{ FANCY_CACHE_MEDIA_URL }}js/jquery-1.6.2.min.js"><\/script>')</script>
+<script src="{{ FANCY_CACHE_MEDIA_URL }}js/jquery-ui.min.js" type="text/javascript"></script>
+{% if DAJAXICE_JS_URL %}{% dajaxice_js_import DAJAXICE_JS_URL %}{% else %}{% dajaxice_js_import %}{% endif %}
+<script src="{{ FANCY_CACHE_MEDIA_URL }}js/base.js" type="text/javascript"></script>
+<script src="{{ FANCY_CACHE_MEDIA_URL }}js/panel.js" type="text/javascript"></script>

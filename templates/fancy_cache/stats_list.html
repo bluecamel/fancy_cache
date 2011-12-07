@@ -1,0 +1,25 @@
+{% extends "fancy_cache/base.html" %}
+
+{% block content %}
+    <div>
+        {% for server in servers %}
+        <table class="fc-manager-table">
+            <caption>Host: <strong>{{ server.host }}</strong> Port: <strong>{{ server.port }}</strong></caption>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for stat in server.stats %}
+                <tr>
+                    <td>{{ stat.name }}</td>
+                    <td>{{ stat.value }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% endfor %}
+    </div>
+{% endblock %}
